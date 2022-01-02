@@ -2,3 +2,7 @@
     border-top: 2px solid black;
     margin-top: 20px;
 }
+
+#current-weather {
+    margin-bottom: 40px;
+}
