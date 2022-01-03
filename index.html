@@ -19,7 +19,10 @@
       <div class="columns">
           <div class="column is-one-quarter">
             <div id="city-input-div">
-                <input class="input is-link is-rounded is-focused" id="city-form" type="text" placeholder="Enter City">
+                <input class="input is-link is-rounded is-focused" id="city-input" type="text" placeholder="Enter City">
+            </div>
+            <div>
+              <button class="button is-link is-fullwidth" id="search-btn">Search</button>
             </div>
             <div id="prev-cities">
                 previous cities
@@ -27,14 +30,14 @@
           </div>
           <div class="column">
             <div id="current-weather">
-              <h3 id="location"></h3>
-              <p id="current-temp"></p>
-              <p id="wind-speed"></p>
-              <p id="humidity"></p>
-              <p id="UV-index"></p>
+              <h3 id="location" class="subtitle"></h3> <br />
+              <p id="current-temp"></p><br />
+              <p id="wind-speed"></p><br />
+              <p id="humidity"></p><br />
+              <p id="UV-index"></p><br />
             </div>
-            <div id="5-day-weather">
-                5 day weather
+            <div class="columns" id="five-day-weather">
+              
             </div>
           </div>
       </div>

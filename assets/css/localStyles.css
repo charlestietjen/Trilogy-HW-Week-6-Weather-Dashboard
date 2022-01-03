@@ -3,6 +3,10 @@
     margin-top: 20px;
 }
 
+#city-input-div {
+    margin-bottom: 5px;
+}
+
 #current-weather {
     margin-bottom: 40px;
 }
