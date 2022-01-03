@@ -89,8 +89,6 @@ var fillCurrentWeather = (function(weather) {
     uvIndexEl.textContent = "UV Index: " + weather.current.uvi;
     uvIndexEl.classList = uvColorClass;
     currentIconEl.setAttribute("src", cIconUrl);
-    console.log(weather);
-    console.log(cIconUrl);
 });
 
 var fillFiveDayWeather = (function(weather) {
