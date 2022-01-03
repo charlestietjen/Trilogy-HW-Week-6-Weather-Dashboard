@@ -18,10 +18,14 @@ var geoCode = (function(city){
         if (response.ok) {
             response.json().then(function(data) {
                 if (data.length === 0) {
-                    alert("Entered location returned no results.");
+                    locDateEl.innerText = "Location entered was invalid or received no results, please try again.";
                 } else {
                     fetchWeather(data[0].lat, data[0].lon);
-                    currentLocName = data[0].name + ", " + data[0].state;
+                    if (data[0].state === undefined){
+                        currentLocName = data[0].name;
+                    } else {
+                        currentLocName = data[0].name + ", " + data[0].state;
+                    }
                     for(i = 0; i < searchHist.length; i++){
                         if (searchHist[i] === currentLocName){
                             console.log(searchHist);
@@ -59,10 +63,9 @@ var fetchWeather = (function(lat, long){
             response.json().then(function(data) {
                 fillCurrentWeather(data);
                 fillFiveDayWeather(data);
-                //console.log(data);
             })
         } else {
-            console.log("weather no bueno");
+            locDateEl.innerText = "No/Invalid response from Weather Source, please try again later.";
         }
     })
 });
@@ -121,19 +124,20 @@ var fillFiveDayWeather = (function(weather) {
         var uDate = dayjs.unix(weather.daily[i].dt);
         var dateEl = document.createElement("h3");
         dateEl.innerText = (uDate.$M + 1) + "/" + uDate.$D + "/" + uDate.$y;
+        dateEl.classList = "card-header card-header-title subtitle";
         var wIconConEl = document.createElement("div");
         wIconConEl.classList = "card-image";
         var wIconEl = document.createElement("figure")
         wIconEl.classList = "image, is-16x16";
         wIconEl.innerHTML = "<img src='" + day[i].icon + "' alt='Weather Icon'>";
         var tempEl = document.createElement("P");
-        tempEl.classList = "card-content";
+        tempEl.classList = "card-content subtitle";
         tempEl.innerText = "Temperature: " + day[i].temp + "C";
         var windEl = document.createElement("P");
-        windEl.classList = "card-content";
+        windEl.classList = "card-content subtitle";
         windEl.innerText = "Wind Speed: " + day[i].wind + "km/h";
         var humEl = document.createElement("P");
-        humEl.classList = "card-content";
+        humEl.classList = "card-content subtitle";
         humEl.innerText = "Humidity: " + day[i].hum + "%";
         fiveDayEl.appendChild(containerCardEl);
         containerCardEl.appendChild(dateEl);
