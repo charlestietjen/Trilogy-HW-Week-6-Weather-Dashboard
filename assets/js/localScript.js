@@ -13,7 +13,7 @@ var searchHist = [];
 var histBtnEl = document.querySelectorAll(".prev-btn");
 
 var geoCode = (function(city){
-    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&limit=5&appid=' + weatherKey;
+    var apiUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&limit=5&appid=' + weatherKey;
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
@@ -57,7 +57,7 @@ var histBtnHandler = (function(name){
 })
 
 var fetchWeather = (function(lat, long){
-    var apiUrl = 'http://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&units=metric' + '&appid=' + weatherKey;
+    var apiUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + long + '&units=metric' + '&appid=' + weatherKey;
     fetch(apiUrl).then(function(response){
         if (response.ok) {
             response.json().then(function(data) {
@@ -115,7 +115,7 @@ var fillFiveDayWeather = (function(weather) {
         }
     ];
     for (i = 0; i < day.length; i++) {
-        day[i].icon = "http://openweathermap.org/img/wn/" + weather.daily[i].weather[0].icon + "@2x.png";
+        day[i].icon = "https://openweathermap.org/img/wn/" + weather.daily[i].weather[0].icon + "@2x.png";
         day[i].temp = weather.daily[i].temp.day;
         day[i].wind = weather.daily[i].wind_speed;
         day[i].hum = weather.daily[i].humidity;
