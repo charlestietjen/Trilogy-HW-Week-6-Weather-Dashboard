@@ -4,6 +4,7 @@ var currentTempEl = document.querySelector("#current-temp");
 var windSpeedEl = document.querySelector("#wind-speed");
 var humidityEl = document.querySelector("#humidity");
 var uvIndexEl = document.querySelector("#UV-index");
+var currentIconEl = document.querySelector("#current-weather-icon");
 var currentLocName = " ";
 var searchBtnEl = document.querySelector("#search-btn");
 var inputEl = document.querySelector("#city-input");
@@ -28,7 +29,6 @@ var geoCode = (function(city){
                     }
                     for(i = 0; i < searchHist.length; i++){
                         if (searchHist[i] === currentLocName){
-                            console.log(searchHist);
                             return;
                         }
                     }
@@ -36,20 +36,17 @@ var geoCode = (function(city){
                 }
             })
         } else {
-            console.log("Search was invalid");
+            locDateEl.innerText("Location entered was invalid or received no results, please try again.");
         }
     })
 });
 
 var histBtnHandler = (function(name){
-    console.log(name);
-    console.log(searchHist);
     histBtnEl = document.querySelectorAll(".prev-btn");
     var newBtn = document.createElement("button");
     newBtn.classList = "prev-btn button is-fullwidth is-link";
     newBtn.value = name;
     newBtn.innerText = name;
-    console.log(newBtn);
     searchHistEl.appendChild(newBtn);
     saveSearchHist(name);
     newBtn.addEventListener("click", function() {
@@ -73,11 +70,27 @@ var fetchWeather = (function(lat, long){
 var fillCurrentWeather = (function(weather) {
     var cDate = dayjs.unix(weather.current.dt);
     currentLocName = currentLocName + " (" + (cDate.$M + 1) + "/" + cDate.$D + "/" + cDate.$y + ")";
-    locDateEl.textContent = currentLocName;
+    locDateEl.textContent = currentLocName + " - " + weather.current.weather[0].main + ", " + weather.current.weather[0].description;
+    var cIconUrl = "https://openweathermap.org/img/wn/" + weather.current.weather[0].icon + "@2x.png";
+    var uviNum = Number(weather.current.uvi);
+    var uvColorClass = "has-background-success";
+    if (uviNum >= 11) {
+        uvColorClass = "has-background-danger";
+    } else if (uviNum >= 8) {
+        uvColorClass = "has-background-danger";
+    } else if (uviNum >= 6) {
+        uvColorClass = "has-background-warning";
+    } else if (uviNum >= 3) {
+        uvColorClass = "has-background-warning";
+    };
     currentTempEl.textContent = "Temperature: " + weather.current.temp + "C";
     windSpeedEl.textContent = "Wind Speed: " + weather.current.wind_speed + " km/h";
     humidityEl.textContent = "Humidity: " + weather.current.humidity + "%";
     uvIndexEl.textContent = "UV Index: " + weather.current.uvi;
+    uvIndexEl.classList = uvColorClass;
+    currentIconEl.setAttribute("src", cIconUrl);
+    console.log(weather);
+    console.log(cIconUrl);
 });
 
 var fillFiveDayWeather = (function(weather) {
