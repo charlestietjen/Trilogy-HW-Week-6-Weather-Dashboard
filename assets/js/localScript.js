@@ -20,9 +20,15 @@ var geoCode = (function(city){
                 if (data.length === 0) {
                     alert("Entered location returned no results.");
                 } else {
-                    currentLocName = data[0].name + ", " + data[0].state;
-                    histBtnHandler(currentLocName);
                     fetchWeather(data[0].lat, data[0].lon);
+                    currentLocName = data[0].name + ", " + data[0].state;
+                    for(i = 0; i < searchHist.length; i++){
+                        if (searchHist[i] === currentLocName){
+                            console.log(searchHist);
+                            return;
+                        }
+                    }
+                    histBtnHandler(currentLocName);
                 }
             })
         } else {
@@ -32,20 +38,16 @@ var geoCode = (function(city){
 });
 
 var histBtnHandler = (function(name){
-    for (i = 0; i < searchHist.length; i++) {
-        if (name === searchHist[i]){
-            //do nothing
-            return;
-        }
-    }
+    console.log(name);
+    console.log(searchHist);
     histBtnEl = document.querySelectorAll(".prev-btn");
-    searchHist.push(name);
     var newBtn = document.createElement("button");
     newBtn.classList = "prev-btn button is-fullwidth is-link";
     newBtn.value = name;
     newBtn.innerText = name;
     console.log(newBtn);
     searchHistEl.appendChild(newBtn);
+    saveSearchHist(name);
     newBtn.addEventListener("click", function() {
         geoCode(name)});
 })
@@ -115,7 +117,7 @@ var fillFiveDayWeather = (function(weather) {
         day[i].wind = weather.daily[i].wind_speed;
         day[i].hum = weather.daily[i].humidity;
         var containerCardEl = document.createElement("div");
-        containerCardEl.classList = "card";
+        containerCardEl.classList = "card is-link";
         var uDate = dayjs.unix(weather.daily[i].dt);
         var dateEl = document.createElement("h3");
         dateEl.innerText = (uDate.$M + 1) + "/" + uDate.$D + "/" + uDate.$y;
@@ -143,18 +145,29 @@ var fillFiveDayWeather = (function(weather) {
         }
 });
 
-function reloadCss()
-{
-    var links = document.getElementsByTagName("link");
-    for (var cl in links)
-    {
-        var link = links[cl];
-        if (link.rel === "stylesheet")
-            link.href += "";
+var saveSearchHist = (function(name){
+    for(i = 0; i < searchHist.length; i++) {
+        if (searchHist[i] === name) {
+            return;
+        }
     }
-}
+    searchHist.push(name);
+    localStorage.setItem("searchHistory", JSON.stringify(searchHist));
+});
+
+var loadSearchHist = (function(){
+    searchHist = JSON.parse(localStorage.getItem("searchHistory"));
+    if (searchHist === null) {
+        searchHist = [];
+    }
+   for (i = 0; i < searchHist.length; i++) {
+        histBtnHandler(searchHist[i]);
+    };
+});
 
 searchBtnEl.addEventListener("click", function(){
     var searchTerm = inputEl.value;
     geoCode(searchTerm);
 });
+
+loadSearchHist();
