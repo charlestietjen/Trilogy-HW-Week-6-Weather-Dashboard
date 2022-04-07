@@ -10,7 +10,7 @@ Additionally my dashboard will save previous searches between sessions, as of wr
 
 [Deployed App](https://charlestietjen.github.io/Trilogy-HW-Week-6-Weather-Dashboard/ "Weather Dashboard")
 
-![Project Screenshot](project-SS.png?raw=true)
+![Project Screenshot](img/project-ss.png?raw=true)
 
 ### Acceptance Criteria
 
